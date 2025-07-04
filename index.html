@@ -142,6 +142,29 @@
             color: #00f2fe;
         }
         
+        /* Power status indicator */
+        .power-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
+        }
+        
+        .power-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #4CAF50;
+            box-shadow: 0 0 8px #4CAF50;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+        
         .timeline {
             display: flex;
             flex-direction: column;
@@ -338,6 +361,115 @@
             transform: rotate(-20deg);
         }
         
+        /* Live status section */
+        .live-status {
+            background: rgba(0, 30, 60, 0.8);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 40px auto;
+            max-width: 900px;
+            text-align: center;
+            border: 1px solid rgba(79, 172, 254, 0.3);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .status-title {
+            font-size: 2.2rem;
+            color: #00f2fe;
+            margin-bottom: 25px;
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+        }
+        
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .status-card {
+            background: rgba(0, 40, 80, 0.6);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(79, 172, 254, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .status-card:hover {
+            transform: translateY(-5px);
+            background: rgba(0, 50, 100, 0.7);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
+        
+        .status-label {
+            font-size: 1.2rem;
+            color: #4facfe;
+            margin-bottom: 10px;
+        }
+        
+        .status-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+        
+        .status-change {
+            font-size: 0.9rem;
+            color: #a3d5ff;
+            font-style: italic;
+        }
+        
+        /* Advertisement section */
+        .ad-section {
+            background: rgba(0, 30, 60, 0.7);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 40px auto;
+            max-width: 900px;
+            text-align: center;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .ad-title {
+            font-size: 1.2rem;
+            color: #FFD700;
+            margin-bottom: 15px;
+        }
+        
+        .ad-container {
+            background: rgba(0, 20, 40, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .ad-text {
+            font-size: 1.1rem;
+            color: #FFD700;
+            margin-bottom: 15px;
+        }
+        
+        .ad-cta {
+            display: inline-block;
+            background: linear-gradient(to right, #FF8C00, #FFD700);
+            color: #0a0a2a;
+            padding: 10px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .ad-cta:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+        
         @media (max-width: 900px) {
             .timeline::before {
                 left: 30px;
@@ -359,6 +491,10 @@
             .voyager-title {
                 font-size: 2rem;
             }
+            
+            .status-title {
+                font-size: 1.8rem;
+            }
         }
         
         @media (max-width: 600px) {
@@ -378,6 +514,10 @@
             .voyager-container {
                 height: auto;
                 padding: 30px 20px;
+            }
+            
+            .status-value {
+                font-size: 1.6rem;
             }
         }
     </style>
@@ -409,6 +549,7 @@
                 <div class="stat-card">
                     <div class="stat-title">Distance from Earth</div>
                     <div class="stat-value">24.3B km</div>
+                    <div class="status-change">+342 km/s</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-title">Launch Date</div>
@@ -419,9 +560,49 @@
                     <div class="stat-value">61,500 km/h</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-title">Power Left</div>
+                    <div class="stat-title">Power Status</div>
                     <div class="stat-value">∼2035</div>
+                    <div class="power-indicator">
+                        <div class="power-dot"></div>
+                        <span style="font-size: 0.9rem; color: #4CAF50;">Operational</span>
+                    </div>
                 </div>
+            </div>
+        </div>
+        
+        <!-- Live Status Section -->
+        <div class="live-status">
+            <h2 class="status-title">Voyager 1 Live Status</h2>
+            <div class="status-grid">
+                <div class="status-card">
+                    <div class="status-label">Current Distance from Earth</div>
+                    <div class="status-value" id="live-distance">24,345,678,901 km</div>
+                    <div class="status-change">Increasing at 61,500 km/h</div>
+                </div>
+                <div class="status-card">
+                    <div class="status-label">Power Status</div>
+                    <div class="status-value" id="live-power">72%</div>
+                    <div class="status-change">Estimated mission end: 2035</div>
+                </div>
+                <div class="status-card">
+                    <div class="status-label">Signal Travel Time</div>
+                    <div class="status-value" id="signal-time">22h 37m</div>
+                    <div class="status-change">One-way communication delay</div>
+                </div>
+                <div class="status-card">
+                    <div class="status-label">Data Transmission</div>
+                    <div class="status-value" id="data-rate">160 bps</div>
+                    <div class="status-change">Current data rate</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Advertisement Section -->
+        <div class="ad-section">
+            <div class="ad-title">SPONSORED CONTENT</div>
+            <div class="ad-container">
+                <p class="ad-text">Explore the cosmos from home with our premium telescope collection!</p>
+                <a href="#" class="ad-cta">SHOP NOW</a>
             </div>
         </div>
         
@@ -459,6 +640,15 @@
                 </div>
             </div>
             
+            <!-- Advertisement Section -->
+            <div class="ad-section">
+                <div class="ad-title">SPONSORED BY</div>
+                <div class="ad-container">
+                    <p class="ad-text">Experience space like never before with our VR Space Explorer Kit!</p>
+                    <a href="#" class="ad-cta">LEARN MORE</a>
+                </div>
+            </div>
+            
             <div class="timeline-item">
                 <div class="timeline-content">
                     <div class="timeline-year">1990 📸</div>
@@ -490,6 +680,15 @@
                         from interstellar space, expected to last until about 2035.
                     </p>
                 </div>
+            </div>
+        </div>
+        
+        <!-- Advertisement Section -->
+        <div class="ad-section">
+            <div class="ad-title">RECOMMENDED FOR YOU</div>
+            <div class="ad-container">
+                <p class="ad-text">Get the official Voyager Golden Record replica - a message to the cosmos!</p>
+                <a href="#" class="ad-cta">GET YOURS</a>
             </div>
         </div>
         
@@ -602,10 +801,48 @@
             });
         }
         
+        // Live status simulation
+        function updateLiveStatus() {
+            // Simulate distance increasing
+            const distanceEl = document.getElementById('live-distance');
+            const powerEl = document.getElementById('live-power');
+            const signalEl = document.getElementById('signal-time');
+            const dataEl = document.getElementById('data-rate');
+            
+            // Get current values
+            let distance = parseFloat(distanceEl.textContent.replace(/[^\d.]/g, ''));
+            let power = parseFloat(powerEl.textContent);
+            
+            // Update values (simulated)
+            distance += 0.01; // Simulate increasing distance
+            
+            // Update power (slowly decreasing)
+            if (power > 10) {
+                power -= 0.0001;
+            }
+            
+            // Update data rate (simulate fluctuations)
+            const dataRate = Math.floor(140 + Math.random() * 40);
+            
+            // Update elements
+            distanceEl.textContent = distance.toFixed(2) + 'B km';
+            powerEl.textContent = power.toFixed(2) + '%';
+            dataEl.textContent = dataRate + ' bps';
+            
+            // Update signal time based on distance
+            const hours = Math.floor(distance * 0.92);
+            const minutes = Math.floor((distance * 0.92 - hours) * 60);
+            signalEl.textContent = `${hours}h ${minutes}m`;
+            
+            // Update every 5 seconds
+            setTimeout(updateLiveStatus, 5000);
+        }
+        
         // Initialize when page loads
         window.addEventListener('DOMContentLoaded', () => {
             createStarfield();
             animateOnScroll();
+            updateLiveStatus();
             
             // Add animation CSS
             const style = document.createElement('style');
